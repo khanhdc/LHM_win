@@ -35,9 +35,11 @@ from LHM.runners.infer.utils import (
     resize_image_keepaspect_np,
 )
 from LHM.utils.face_detector import FaceDetector
+
+# from LHM.utils.video import images_to_video
+from LHM.utils.ffmpeg_utils import images_to_video
 from LHM.utils.hf_hub import wrap_model_hub
 from LHM.utils.logging import configure_logger
-from LHM.utils.video import images_to_video
 
 from .base_inferrer import Inferrer
 
@@ -161,7 +163,7 @@ def infer_preprocess_image(
             constant_values=0,
         )
     else:
-        offset_w = int(offset_w)
+        offset_w = -offset_w 
         rgb = rgb[:,offset_w:-offset_w,:]
         mask = mask[:,offset_w:-offset_w]
 
@@ -446,8 +448,6 @@ class HumanLRMInferrer(Inferrer):
         shape_param=None,
     ):
 
-        if os.path.exists(dump_video_path):
-            return
         source_size = self.cfg.source_size
         render_size = self.cfg.render_size
         # render_views = self.cfg.render_views
@@ -540,14 +540,31 @@ class HumanLRMInferrer(Inferrer):
         shape_param = torch.tensor(shape_param, dtype=dtype).unsqueeze(0)
 
         self.model.to(dtype)
+        smplx_params = motion_seq['smplx_params']
+        smplx_params['betas'] = shape_param.to(device)
+        gs_model_list, query_points, transform_mat_neutral_pose = self.model.infer_single_view(
+            image.unsqueeze(0).to(device, dtype),
+            src_head_rgb.unsqueeze(0).to(device, dtype),
+            None,
+            None,
+            render_c2ws=motion_seq["render_c2ws"].to(device),
+            render_intrs=motion_seq["render_intrs"].to(device),
+            render_bg_colors=motion_seq["render_bg_colors"].to(device),
+            smplx_params={
+                k: v.to(device) for k, v in smplx_params.items()
+            },
+        )
 
         batch_dict = dict()
-        batch_size = 80  # avoid memeory out!
+        batch_size = 40  # avoid memeory out!
+
 
         for batch_i in range(0, camera_size, batch_size):
             with torch.no_grad():
                 # TODO check device and dtype
                 # dict_keys(['comp_rgb', 'comp_rgb_bg', 'comp_mask', 'comp_depth', '3dgs'])
+
+                print(f"batch: {batch_i}, total: {camera_size //batch_size +1} ")
 
                 keys = [
                     "root_pose",
@@ -565,16 +582,14 @@ class HumanLRMInferrer(Inferrer):
                 ]
                 batch_smplx_params = dict()
                 batch_smplx_params["betas"] = shape_param.to(device)
+                batch_smplx_params['transform_mat_neutral_pose'] = transform_mat_neutral_pose
                 for key in keys:
                     batch_smplx_params[key] = motion_seq["smplx_params"][key][
                         :, batch_i : batch_i + batch_size
                     ].to(device)
 
-                res = self.model.infer_single_view(
-                    image.unsqueeze(0).to(device, dtype),
-                    src_head_rgb.unsqueeze(0).to(device, dtype),
-                    None,
-                    None,
+                # def animation_infer(self, gs_model_list, query_points, smplx_params, render_c2ws, render_intrs, render_bg_colors, render_h, render_w):
+                res = self.model.animation_infer(gs_model_list, query_points, batch_smplx_params,
                     render_c2ws=motion_seq["render_c2ws"][
                         :, batch_i : batch_i + batch_size
                     ].to(device),
@@ -584,10 +599,8 @@ class HumanLRMInferrer(Inferrer):
                     render_bg_colors=motion_seq["render_bg_colors"][
                         :, batch_i : batch_i + batch_size
                     ].to(device),
-                    smplx_params={
-                        k: v.to(device) for k, v in batch_smplx_params.items()
-                    },
-                )
+                    )
+
 
             for accumulate_key in ["comp_rgb", "comp_mask"]:
                 if accumulate_key not in batch_dict:
@@ -605,19 +618,6 @@ class HumanLRMInferrer(Inferrer):
 
         rgb = rgb * mask + (1 - mask) * 1
         rgb = np.clip(rgb * 255, 0, 255).astype(np.uint8)
-
-        if vis_motion:
-            # print(rgb.shape, motion_seq["vis_motion_render"].shape)
-
-            vis_ref_img = np.tile(
-                cv2.resize(vis_ref_img, (rgb[0].shape[1], rgb[0].shape[0]))[
-                    None, :, :, :
-                ],
-                (rgb.shape[0], 1, 1, 1),
-            )
-            rgb = np.concatenate(
-                [rgb, motion_seq["vis_motion_render"], vis_ref_img], axis=2
-            )
 
         os.makedirs(os.path.dirname(dump_video_path), exist_ok=True)
 
