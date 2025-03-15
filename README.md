@@ -10,6 +10,7 @@
 </p>
 
 ## 📢 Latest Updates
+**[March 15, 2025]** Inference Time Optimization:  30% Faster <br>
 **[March 13, 2025]** Initial release with:  
 ✅ Inference codebase  
 ✅ Pretrained LHM-0.5B model  
