@@ -1,8 +1,8 @@
 # <span><img src="./assets/LHM_logo_parsing.png" height="35" style="vertical-align: top;"> - Official PyTorch Implementation</span>
 
 [![Project Website](https://img.shields.io/badge/🌐-Project_Website-blueviolet)](https://lingtengqiu.github.io/LHM/)
-[![arXiv Paper](https://img.shields.io/badge/📜-arXiv:230X.XXXXX-b31b1b)]()
-[![HuggingFace](https://img.shields.io/badge/🤗-HuggingFace_Space-blue)]()
+[![arXiv Paper](https://img.shields.io/badge/📜-arXiv:2503-10625)](https://arxiv.org/pdf/2503.10625)
+[![HuggingFace](https://img.shields.io/badge/🤗-HuggingFace_Space-blue)](https://huggingface.co/spaces/DyrusQZ/LHM)
 [![Apache License](https://img.shields.io/badge/📃-Apache--2.0-929292)](https://www.apache.org/licenses/LICENSE-2.0)
 
 <p align="center">
@@ -10,16 +10,16 @@
 </p>
 
 ## 📢 Latest Updates
-**[March 14, 2025]** Optimize Inference Time: 30% faster
 **[March 13, 2025]** Initial release with:  
 ✅ Inference codebase  
 ✅ Pretrained LHM-0.5B model  
 ✅ Pretrained LHM-1B model  
-✅ Real-time rendering pipeline
+✅ Real-time rendering pipeline  
+✅ Huggingface Online Demo  
 
 ### TODO List 
 - [x] Core Inference Pipeline (v0.1) 🔥🔥🔥
-- [ ] HuggingFace Demo Integration
+- [x] HuggingFace Demo Integration 🤗🤗🤗
 - [ ] ModelScope Deployment
 - [ ] Motion Processing Scripts 
 - [ ] Training Codes Release
@@ -160,12 +160,12 @@ Thanks for their excellent works and great contribution to 3D generation and 3D 
 ## Citation 
 ```
 @inproceedings{qiu2025LHM,
-  title={LHM: Large Animatable Human Reconstruction Model from a Single Image in One Second},
+  title={LHM: Large Animatable Human Reconstruction Model for Single Image to 3D in Seconds},
   author={Lingteng Qiu and Xiaodong Gu and Peihao Li  and Qi Zuo
      and Weichao Shen and Junfei Zhang and Kejie Qiu and Weihao Yuan
      and Guanying Chen and Zilong Dong and Liefeng Bo 
     },
-  booktitle={arXiv preprint arXiv:xxxxx},
+  booktitle={arXiv preprint arXiv:2503.10625},
   year={2025}
 }
 ```
