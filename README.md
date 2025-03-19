@@ -10,6 +10,7 @@
 </p>
 
 ## 📢 Latest Updates
+**[March 16, 2025]** Gradio Optimization:  Faster and More Stable 🔥🔥🔥 <br>
 **[March 15, 2025]** Inference Time Optimization:  30% Faster <br>
 **[March 13, 2025]** Initial release with:  
 ✅ Inference codebase  
