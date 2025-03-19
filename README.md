@@ -11,6 +11,7 @@
 
 如果您熟悉中文，可以[阅读中文版本的README](./README_CN.md)
 ## 📢 Latest Updates
+**[March 19, 2025]** Local Gradio App.py<br>
 **[March 19, 2025]** Gradio Optimization:  Faster and More Stable 🔥🔥🔥 <br>
 **[March 15, 2025]** Inference Time Optimization:  30% Faster <br>
 **[March 13, 2025]** Initial release with:  
@@ -129,6 +130,11 @@ After downloading weights and data, the folder of the project structure seems li
 ├── inference.sh
 ├── README.md
 ├── requirements.txt
+```
+
+### 💻 Local Gradio Run
+```bash
+python ./app.py
 ```
 
 ### 🏃 Inference Pipeline

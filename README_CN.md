@@ -10,6 +10,7 @@
 </p>
 
 ## 📢 最新动态
+**[March 19, 2025]** 本地部署 Gradio<br>
 **[2025年3月19日]** HuggingFace Demo：更快更稳定 <br>
 **[2025年3月15日]** 推理时间优化：提速30% <br>
 **[2025年3月13日]** 首次版本发布包含：  
@@ -132,6 +133,13 @@ tar -xvf ./motion_video.tar
 ├── inference.sh
 ├── README.md
 ├── requirements.txt
+```
+
+
+
+### 💻 本地部署 
+```bash
+python ./app.py
 ```
 
 ### 🏃 推理流程
