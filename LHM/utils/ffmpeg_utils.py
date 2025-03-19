@@ -1,10 +1,11 @@
 import os
 import pdb
-import torch
-import numpy as np
-import imageio
+
 import cv2
+import imageio
 import imageio.v3 as iio
+import numpy as np
+import torch
 
 VIDEO_TYPE_LIST = {'.avi','.mp4','.gif','.AVI','.MP4','.GIF'}
 
@@ -36,7 +37,7 @@ def encodeffmpeg(inputs, frame_rate, output, format="png"):
     os.system(cmd)
     print("video done!")
 
-def images_to_video(images, output_path, fps, gradio_codec: bool, verbose=False, bitrate="20M"):
+def images_to_video(images, output_path, fps, gradio_codec: bool, verbose=False, bitrate="10M"):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     frames = []
     for i in range(images.shape[0]):
