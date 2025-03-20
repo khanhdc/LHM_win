@@ -10,7 +10,8 @@
 </p>
 
 ## 📢 最新动态
-**[March 19, 2025]** 本地部署 Gradio<br>
+**[2025年3月20日]** 发布视频动作处理脚本<br>
+**[2025年3月19日]** 本地部署 Gradio<br>
 **[2025年3月19日]** HuggingFace Demo：更快更稳定 <br>
 **[2025年3月15日]** 推理时间优化：提速30% <br>
 **[2025年3月13日]** 首次版本发布包含：  
@@ -24,7 +25,7 @@
 - [x] 核心推理管线 (v0.1) 🔥🔥🔥
 - [x] HuggingFace 演示集成 🤗🤗🤗
 - [ ] ModelScope 部署
-- [ ] 动作处理脚本 
+- [x] 动作处理脚本 
 - [ ] 训练代码发布
 
 ## 🚀 快速开始
@@ -81,7 +82,7 @@ tar -xvf LHM_prior_model.tar
 ```
 
 ### 动作数据准备
-我们提供了测试动作示例，处理脚本将尽快更新 :)
+我们提供了测试动作示例：
 
 ```bash
 # 下载先验模型权重
@@ -151,6 +152,36 @@ python ./app.py
 
 bash inference.sh ${CONFIG} ${MODEL_NAME} ${IMAGE_PATH_OR_FOLDER}  ${MOTION_SEQ}
 ```
+### 处理视频动作数据
+
+- 下载动作提取相关的预训练模型权重
+  ```bash
+  wget -P ./pretrained_models/human_model_files/pose_estimate https://virutalbuy-public.oss-cn-hangzhou.aliyuncs.com/share/aigc3d/data/for_lingteng/LHM/yolov8x.pt
+
+  wget -P ./pretrained_models/human_model_files/pose_estimate https://virutalbuy-public.oss-cn-hangzhou.aliyuncs.com/share/aigc3d/data/for_lingteng/LHM/vitpose-h-wholebody.pth
+  ```
+
+- 安装额外的依赖
+  ```bash
+  cd ./engine/pose_estimation
+  pip install -v -e third-party/ViTPose
+  pip install ultralytics
+  ```
+
+- 运行以下命令，从视频中提取动作数据
+   ```bash
+   # python ./engine/pose_estimation/video2motion.py --video_path ./train_data/demo.mp4 --output_path ./train_data/custom_motion
+
+   python ./engine/pose_estimation/video2motion.py --video_path ${VIDEO_PATH} --output_path ${OUTPUT_PATH}
+
+   ```
+
+- 使用提取的动作数据驱动数字人
+  ```bash
+  # bash ./inference.sh ./configs/inference/human-lrm-500M.yaml LHM-500M ./train_data/example_imgs/ ./train_data/custom_motion/demo/smplx_params
+
+  bash inference.sh ${CONFIG} ${MODEL_NAME} ${IMAGE_PATH_OR_FOLDER}  ${OUTPUT_PATH}/${VIDEO_NAME}/smplx_params
+  ```
 
 ## 计算指标
 我们提供了简单的指标计算脚本：

@@ -11,6 +11,7 @@
 
 如果您熟悉中文，可以[阅读中文版本的README](./README_CN.md)
 ## 📢 Latest Updates
+**[March 20, 2025]** Release video motion processing pipeline<br>
 **[March 19, 2025]** Local Gradio App.py<br>
 **[March 19, 2025]** Gradio Optimization:  Faster and More Stable 🔥🔥🔥 <br>
 **[March 15, 2025]** Inference Time Optimization:  30% Faster <br>
@@ -25,7 +26,7 @@
 - [x] Core Inference Pipeline (v0.1) 🔥🔥🔥
 - [x] HuggingFace Demo Integration 🤗🤗🤗
 - [ ] ModelScope Deployment
-- [ ] Motion Processing Scripts 
+- [x] Motion Processing Scripts 
 - [ ] Training Codes Release
 
 ## 🚀 Getting Started
@@ -146,6 +147,37 @@ python ./app.py
 
 bash inference.sh ${CONFIG} ${MODEL_NAME} ${IMAGE_PATH_OR_FOLDER}  ${MOTION_SEQ}
 ```
+
+### Custom Video Motion Processing
+
+- Download model weights for motion processing.
+  ```bash
+  wget -P ./pretrained_models/human_model_files/pose_estimate https://virutalbuy-public.oss-cn-hangzhou.aliyuncs.com/share/aigc3d/data/for_lingteng/LHM/yolov8x.pt
+
+  wget -P ./pretrained_models/human_model_files/pose_estimate https://virutalbuy-public.oss-cn-hangzhou.aliyuncs.com/share/aigc3d/data/for_lingteng/LHM/vitpose-h-wholebody.pth
+  ```
+
+- Install extra dependencies.
+  ```bash
+  cd ./engine/pose_estimation
+  pip install -v -e third-party/ViTPose
+  pip install ultralytics
+  ```
+
+- Run the script.
+   ```bash
+   # python ./engine/pose_estimation/video2motion.py --video_path ./train_data/demo.mp4 --output_path ./train_data/custom_motion
+
+   python ./engine/pose_estimation/video2motion.py --video_path ${VIDEO_PATH} --output_path ${OUTPUT_PATH}
+
+   ```
+
+- Use the motion to drive avatar.
+  ```bash
+  # bash ./inference.sh ./configs/inference/human-lrm-500M.yaml LHM-500M ./train_data/example_imgs/ ./train_data/custom_motion/demo/smplx_params
+
+  bash inference.sh ${CONFIG} ${MODEL_NAME} ${IMAGE_PATH_OR_FOLDER}  ${OUTPUT_PATH}/${VIDEO_NAME}/smplx_params
+  ```
 
 ## Compute Metric
 We provide some simple script to compute the metrics.
