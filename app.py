@@ -44,9 +44,11 @@ from LHM.runners.infer.utils import (
     prepare_motion_seqs,
     resize_image_keepaspect_np,
 )
+from LHM.utils.download_utils import download_extract_tar_from_url
 from LHM.utils.face_detector import VGGHeadDetector
 from LHM.utils.ffmpeg_utils import images_to_video
 from LHM.utils.hf_hub import wrap_model_hub
+from LHM.utils.model_card import MODEL_CARD, MODEL_PATH
 
 
 def get_bbox(mask):
@@ -70,6 +72,14 @@ def get_bbox(mask):
     # scale box to 1.05
     scale_box = box.scale(1.1, width=width, height=height)
     return scale_box
+
+def query_model_name(model_name):
+    if model_name in MODEL_PATH:
+        model_path = MODEL_PATH[model_name]
+        if not os.path.exists(model_path):
+            model_url = MODEL_CARD[model_name]
+            download_extract_tar_from_url(model_url, './')
+    return model_path
 
 def infer_preprocess_image(
     rgb_path,
@@ -211,7 +221,11 @@ def parse_configs():
     if os.environ.get("APP_INFER") is not None:
         args.infer = os.environ.get("APP_INFER")
     if os.environ.get("APP_MODEL_NAME") is not None:
-        cli_cfg.model_name = os.environ.get("APP_MODEL_NAME")
+        model_name = query_model_name(os.environ.get("APP_MODEL_NAME"))
+        cli_cfg.model_name = model_name
+    else:
+        model_name = cli_cfg.model_name
+        cli_cfg.model_name = query_model_name(model_name)
 
     args.config = args.infer if args.config is None else args.config
 
@@ -430,7 +444,7 @@ def demo_lhm(pose_estimator, face_detector, parsing_net, lhm, cfg):
         )
 
         try:
-            rgb = np.array(Image.open(image_path))
+            rgb = np.array(Image.open(image_raw))[...,:3]  # RGBA input
             rgb = torch.from_numpy(rgb).permute(2, 0, 1)
             bbox = face_detector.detect_face(rgb)
             head_rgb = rgb[:, int(bbox[1]) : int(bbox[3]), int(bbox[0]) : int(bbox[2])]
@@ -723,7 +737,7 @@ def launch_gradio_app():
 
     os.environ.update({
         "APP_ENABLED": "1",
-        "APP_MODEL_NAME": "./exps/releases/video_human_benchmark/human-lrm-1B/step_060000/",
+        "APP_MODEL_NAME": "LHM-1B",
         "APP_INFER": "./configs/inference/human-lrm-1B.yaml",
         "APP_TYPE": "infer.human_lrm",
         "NUMBA_THREADING_LAYER": 'omp',
@@ -731,7 +745,7 @@ def launch_gradio_app():
 
     facedetector = VGGHeadDetector(
         "./pretrained_models/gagatracker/vgghead/vgg_heads_l.trcd",
-        device='cpu',
+        device='cuda',
     )
     facedetector.to('cuda')
 

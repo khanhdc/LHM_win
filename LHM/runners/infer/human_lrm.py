@@ -34,12 +34,14 @@ from LHM.runners.infer.utils import (
     prepare_motion_seqs,
     resize_image_keepaspect_np,
 )
+from LHM.utils.download_utils import download_extract_tar_from_url
 from LHM.utils.face_detector import FaceDetector
 
 # from LHM.utils.video import images_to_video
 from LHM.utils.ffmpeg_utils import images_to_video
 from LHM.utils.hf_hub import wrap_model_hub
 from LHM.utils.logging import configure_logger
+from LHM.utils.model_card import MODEL_CARD, MODEL_PATH
 
 from .base_inferrer import Inferrer
 
@@ -108,6 +110,13 @@ def get_bbox(mask):
     scale_box = box.scale(1.1, width=width, height=height)
     return scale_box
 
+def query_model_name(model_name):
+    if model_name in MODEL_PATH:
+        model_path = MODEL_PATH[model_name]
+        if not os.path.exists(model_path):
+            model_url = MODEL_CARD[model_name]
+            download_extract_tar_from_url(model_url, './')
+    return model_path
 
 def infer_preprocess_image(
     rgb_path,
@@ -237,7 +246,11 @@ def parse_configs():
     if os.environ.get("APP_INFER") is not None:
         args.infer = os.environ.get("APP_INFER")
     if os.environ.get("APP_MODEL_NAME") is not None:
+        model_name = query_model_name(os.environ.get("APP_MODEL_NAME"))
         cli_cfg.model_name = os.environ.get("APP_MODEL_NAME")
+    else:
+        model_name = cli_cfg.model_name
+        cli_cfg.model_name = query_model_name(model_name)
 
     if args.config is not None:
         cfg_train = OmegaConf.load(args.config)

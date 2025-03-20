@@ -52,7 +52,7 @@ Or you can install dependencies step by step, following [INSTALL.md](INSTALL.md)
 
 ### Model Weights 
 
-Download pretrained models from our OSS:
+<span style="color:red">Please note that the model will be downloaded automatically if you do not download it yourself.</span>
 
 | Model | Training Data | BH-T Layers | Link | Inference Time|
 | :--- | :--- | :--- | :--- | :--- |
@@ -139,8 +139,11 @@ python ./app.py
 
 ### 🏃 Inference Pipeline
 ```bash
-# bash ./inference.sh ./configs/inference/human-lrm-500M.yaml ./exps/releases/video_human_benchmark/human-lrm-500M/step_060000/ ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
-# bash ./inference.sh ./configs/inference/human-lrm-1B.yaml ./exps/releases/video_human_benchmark/human-lrm-1B/step_060000/ ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
+
+# MODEL_NAME: {LHM-500M, LHM-1B}
+# bash ./inference.sh ./configs/inference/human-lrm-500M.yaml LHM-500M ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
+# bash ./inference.sh ./configs/inference/human-lrm-1B.yaml LHM-1B ./exps/releases/video_human_benchmark/human-lrm-1B/step_060000/ ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
+
 bash inference.sh ${CONFIG} ${MODEL_NAME} ${IMAGE_PATH_OR_FOLDER}  ${MOTION_SEQ}
 ```
 
@@ -156,7 +159,6 @@ python ./tools/metrics/compute_psnr.py -f1 ${gt_folder} -f2 ${results_folder}
 # SSIM LPIPS 
 python ./tools/metrics/compute_ssim_lpips.py -f1 ${gt_folder} -f2 ${results_folder} 
 ```
-
 
 ## Acknowledgement
 This work is built on many amazing research works and open-source projects:

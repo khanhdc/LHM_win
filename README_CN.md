@@ -49,7 +49,8 @@ sh ./install_cu121.sh
 也可按步骤手动安装依赖，详见[INSTALL.md](INSTALL.md)
 
 ### 模型参数 
-从我们的OSS下载预训练模型：
+
+<span style="color:red">如果你没下载模型，模型将会自动下载</span>
 
 模型	训练数据	BH-T层数	下载链接	推理时间
 LHM-0.5B	5K合成数据	5	OSS	2.01 s
@@ -144,8 +145,10 @@ python ./app.py
 
 ### 🏃 推理流程
 ```bash
-# bash ./inference.sh ./configs/inference/human-lrm-500M.yaml ./exps/releases/video_human_benchmark/human-lrm-500M/step_060000/ ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
-# bash ./inference.sh ./configs/inference/human-lrm-1B.yaml ./exps/releases/video_human_benchmark/human-lrm-1B/step_060000/ ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
+# MODEL_NAME={LHM-500M, LHM-1B}
+# bash ./inference.sh ./configs/inference/human-lrm-500M.yaml LHM-500M ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
+# bash ./inference.sh ./configs/inference/human-lrm-1B.yaml LHM-1B ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
+
 bash inference.sh ${CONFIG} ${MODEL_NAME} ${IMAGE_PATH_OR_FOLDER}  ${MOTION_SEQ}
 ```
 
