@@ -77,7 +77,7 @@ tar -xvf LHM_prior_model.tar
 ```
 
 ### Data Motion Preparation
-We provide the test motion examples, we will update the procssing scripts ASAP :).
+We provide the test motion examples, we will update the processing scripts ASAP :).
 
 ```bash
 # Download prior model weights
