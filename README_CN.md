@@ -150,7 +150,10 @@ python ./app.py
 # bash ./inference.sh ./configs/inference/human-lrm-500M.yaml LHM-500M ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
 # bash ./inference.sh ./configs/inference/human-lrm-1B.yaml LHM-1B ./train_data/example_imgs/ ./train_data/motion_video/mimo1/smplx_params
 
+# export animation video
 bash inference.sh ${CONFIG} ${MODEL_NAME} ${IMAGE_PATH_OR_FOLDER}  ${MOTION_SEQ}
+# export mesh 
+bash ./inference_mesh.sh ${CONFIG} ${MODEL_NAME} 
 ```
 ### 处理视频动作数据
 
@@ -209,7 +212,7 @@ python ./tools/metrics/compute_ssim_lpips.py -f1 ${gt_folder} -f2 ${results_fold
 ## 引用 
 ```
 @inproceedings{qiu2025LHM,
-  title={LHM: Large Animatable Human Reconstruction Model for Single Image to 3D in Seconds},
+  title={LHM: Large Animatable Human Reconstruction Model from a Single Image in Seconds},
   author={Lingteng Qiu and Xiaodong Gu and Peihao Li  and Qi Zuo
      and Weichao Shen and Junfei Zhang and Kejie Qiu and Weihao Yuan
      and Guanying Chen and Zilong Dong and Liefeng Bo 
