@@ -37,6 +37,13 @@ Clone the repository.
 git clone git@github.com:aigc3d/LHM.git
 cd LHM
 ```
+### Windows Installation
+Set Up a Virtual Environment**  
+Open **Command Prompt (CMD)**, navigate to the project folder, and run:  
+```bash
+python -m venv lhm_env
+lhm_env\Scripts\activate
+install_cu121.bat
 
 Install dependencies by script.
 ```
