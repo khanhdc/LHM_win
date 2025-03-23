@@ -54,6 +54,7 @@ sh ./install_cu118.sh
 sh ./install_cu121.sh
 ```
 The installation has been tested with python3.10, CUDA 11.8 or CUDA 12.1.
+```
 
 Or you can install dependencies step by step, following [INSTALL.md](INSTALL.md).
 
