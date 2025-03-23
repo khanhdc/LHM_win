@@ -57,3 +57,24 @@ pip install ./simple-knn
 ```
 
 ## 6. Please then follow the [Pytorch3D](https://github.com/facebookresearch/pytorch3d) to install Pytorch3D lib.
+
+Windows Installation
+If you are using Windows, follow these steps to install all dependencies automatically:
+1. Install Python 3.10
+
+Download and install Python 3.10 from python.org.
+✅ Ensure "Add Python to PATH" is checked during installation.
+2. Create & Activate a Virtual Environment
+
+Open Command Prompt (CMD) and run:
+python -m venv lhm_env
+lhm_env\Scripts\activate
+install_cu121.bat
+
+This script will: ✅ Install PyTorch, xformers, and dependencies
+✅ Set up all required libraries
+✅ Install Pytorch3D, SAM2, and diff-gaussian-rasterization
+
+If you get execution policy errors in PowerShell, run:
+Set-ExecutionPolicy Unrestricted -Scope Process
+If installation fails, ensure Git is installed.
