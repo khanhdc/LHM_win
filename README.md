@@ -204,6 +204,9 @@ python ./tools/metrics/compute_psnr.py -f1 ${gt_folder} -f2 ${results_folder}
 python ./tools/metrics/compute_ssim_lpips.py -f1 ${gt_folder} -f2 ${results_folder} 
 ```
 
+## Contribute Needed
+We need a comfyui wrapper of our pipeline. If you are familiar with comfyui and would like to contribute to LHM, please contact muyuan.zq@alibaba-inc.com
+
 ## Acknowledgement
 This work is built on many amazing research works and open-source projects:
 - [OpenLRM](https://github.com/3DTopia/OpenLRM)
