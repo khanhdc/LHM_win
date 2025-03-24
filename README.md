@@ -215,6 +215,10 @@ This work is built on many amazing research works and open-source projects:
 
 Thanks for their excellent works and great contribution to 3D generation and 3D digital human area.
 
+## ✨ Star History
+
+[![Star History](https://api.star-history.com/svg?repos=aigc3d/LHM)](https://star-history.com/#aigc3d/LHM&Date)
+
 ## Citation 
 ```
 @inproceedings{qiu2025LHM,
