@@ -184,7 +184,7 @@ bash ./inference_mesh.sh ${CONFIG} ${MODEL_NAME}
 
    ```
 
-- Use the motion to drive avatar.
+- Use the motion to drive the avatar.
   ```bash
   # bash ./inference.sh ./configs/inference/human-lrm-500M.yaml LHM-500M ./train_data/example_imgs/ ./train_data/custom_motion/demo/smplx_params
 
@@ -192,7 +192,7 @@ bash ./inference_mesh.sh ${CONFIG} ${MODEL_NAME}
   ```
 
 ## Compute Metric
-We provide some simple script to compute the metrics.
+We provide some simple scripts to compute the metrics.
 ```bash
 # download pretrain model into ./pretrained_models/
 wget https://virutalbuy-public.oss-cn-hangzhou.aliyuncs.com/share/aigc3d/data/for_lingteng/arcface_resnet18.pth
